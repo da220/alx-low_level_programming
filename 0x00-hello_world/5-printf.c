@@ -1,7 +1,7 @@
 #include <stdio.h>
 /**
  * main -  program that prints exactly with line printf function
- * return: 0 (success)
+ * @Return: 0 (success)
  * compiles without warning when using -wall gcc
  */
 int main(void)
