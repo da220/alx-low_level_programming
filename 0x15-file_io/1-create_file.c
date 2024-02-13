@@ -1,38 +1,33 @@
 #include "main.h"
 
 /**
- * read_textfile - prints to the stdout POSIX after reading a textfile
- * @filename: pointer to the file name
- * @letters: number of letters to be read and print
- *
- * Return: no of letters it could print or 0
- */
+  * create_file - a function that creates a file
+  * @filename: filename pointer
+  * @text_content: what needs to be written to a file
+  *
+  * Return:  1 on success -1 on failure.
+  */
 
-ssize_t read_textfile(const char *filename, size_t letters)
+int create_file(const char *filename, char *text_content)
 {
-	int file_Des, turn_rd, turn_wr;
-	char *sto_size;
+	int file_des, k, turn_wr;
 
 	if (filename == NULL)
-		return (0);
+		return (-1);
+	file_des = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0600);
+	if (file_des == -1)
+		return (-1);
 
-	file_Des = open(filename, O_RDONLY);
-	if (file_Des == -1)
-		return (0);
-	sto_size = malloc(sizeof(char) * letters + 1);
-	if (sto_size == NULL)
-		return (0);
-	turn_rd = read(file_Des, sto_size, letters);
-	if (turn_rd == -1)
-		return (0);
+	if (text_content)
+	{
+		k = 0;
+		while (text_content[k])
+			k++;
+		turn_wr = write(file_des, text_content, k);
+		if (turn_wr != k)
+			return (-1);
+	}
 
-	sto_size[letters] = '\0';
-
-	turn_wr = write(STDOUT_FILENO, sto_size, turn_rd);
-	if (turn_wr == -1)
-		return (0);
-
-	close(file_Des);
-	free(sto_size);
-	return (turn_wr);
+	close(file_des);
+	return (1);
 }
